@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  --violet: #ae64f3;
+  --violet-hover: #7402df;
+}
+
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 
+               'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #111; /* optional default text color */
+}
+
+.active-button {
+  background-color: var(--violet);
+  color: white;
+}
+
+.active-button:hover {
+  background-color: var(--violet-hover);
+}
+
+.passive-button {
+  color:#111;
+  background-color: lightgrey;
+}
+
+.passive-button:hover {
+  background-color: gray;
+  color: white
+}
+
