@@ -1,89 +1,54 @@
 import { useEffect, useState } from "react";
 import List from "./list";
-import { db } from "./firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
 
 function App() {
-  const [shoppingList, setShoppingList] = useState([]);
+  const [shoppingList, setShoppingList] = useState(() => {
+    const savedList = sessionStorage.getItem("shoppingList");
+    return savedList ? JSON.parse(savedList) : []
+  });
+ 
   const [active, setActive] = useState(1);
   const [input, setInput] = useState('');
-  const [loaded, setLoaded] = useState(false);
 
-  const bought = shoppingList.reduce((acc, val) => val.bought ? acc + 1 : acc, 0);
-  const docRef = doc(db, "shoppingList", "list123");
+  const bought = shoppingList?.reduce((acc,val) => val.bought === true ? acc + 1 : acc, 0)
 
-  // Load once on mount - SIMPLE
-  useEffect(() => {
-    const loadData = async () => {
-      const snap = await getDoc(docRef);
-      if (snap.exists()) {
-        setShoppingList(snap.data().items || []);
-      }
-      setLoaded(true);
-    };
-    loadData();
-  }, []);
-
-  // Save to Firebase BUT only when needed - FIXED
-  const saveToFirebase = async (newList) => {
-    try {
-      await setDoc(docRef, { items: newList });
-      console.log("Saved to Firebase");
-    } catch (error) {
-      console.error("Save error:", error);
-    }
-  };
-
-  // Update handlers - INSTANT UI response
-  async function handleAdd(e) {
+  function handleAdd(e){
     e.preventDefault();
-    if (!input) return;
-
-    // INSTANT UI UPDATE
-    const newList = [...shoppingList, { item: input, bought: false }];
-    setShoppingList(newList);
-    setInput('');
-
-    // Save to Firebase in BACKGROUND (no await)
-    saveToFirebase(newList);
-  }
-
-  async function handleToggle(ind) {
-    // INSTANT UI UPDATE
-    const newList = shoppingList.map((item, index) => 
-      index === ind ? { ...item, bought: !item.bought } : item
-    );
-    setShoppingList(newList);
-
-    // Background save
-    saveToFirebase(newList);
-  }
-
-  async function handleDeleteItem(ind) {
-    // INSTANT UI UPDATE
-    const newList = shoppingList.filter((_, index) => index !== ind);
-    setShoppingList(newList);
-
-    // Background save
-    saveToFirebase(newList);
-  }
-
-  async function handleDeletePurchased() {
-    // INSTANT UI UPDATE
-    const newList = shoppingList.filter(item => !item.bought);
-    setShoppingList(newList);
-
-    // Background save
-    saveToFirebase(newList);
-  }
-
-  async function resetData() {
-    // INSTANT UI UPDATE
-    setShoppingList([]);
+    if(!input) return;
     
-    // Background save
-    saveToFirebase([]);
+    setShoppingList([...shoppingList, {item: input, bought: false}]);
+    setInput('');
   }
+
+  function handleDeleteItem(ind) {
+    setShoppingList(shoppingList.filter((_, index) => index !== ind));
+  }
+
+  function handleDeletePurchased() {
+    setShoppingList(shoppingList.filter(object => object.bought === false))
+  }
+
+  function handleToggle(ind) {
+    setShoppingList(
+      shoppingList.map((obj, index) => 
+        index === ind ? {...obj, bought: !obj.bought} : obj )
+    )
+  }
+
+  function resetData() {
+    sessionStorage.removeItem("shoppingList");
+    window.location.reload();
+  }
+
+  useEffect(() => {
+    if( shoppingList?.length > 0)
+      sessionStorage.setItem('shoppingList', JSON.stringify(shoppingList))
+    else{
+      sessionStorage.removeItem("shoppingList");
+      
+    }
+  }, [shoppingList])
+
 
   return (
     <div className="flex flex-row justify-center items-center bg-[var(--violet)] h-dvh " >
@@ -169,8 +134,7 @@ function App() {
                   object={object} 
                   handleToggle={handleToggle} 
                   handleDeleteItem={handleDeleteItem} 
-                  index={index} 
-                  key={index} 
+                  index={index} key={index} 
                   active={active}
                 />
             ))}

@@ -10,5 +10,5 @@ export default defineConfig({
     eslint(), 
     tailwindcss(),
   ],
-  base: 'shopping-list-v1',
+  base: '/shopping-list-v1/',
 })
