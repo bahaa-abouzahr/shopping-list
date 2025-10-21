@@ -10,7 +10,6 @@ function App() {
   const [input, setInput] = useState('');
   const [loaded, setLoaded] = useState(false);
 
-
   const bought = shoppingList.reduce((acc, val) => val.bought ? acc + 1 : acc, 0);
   const docRef = doc(db, "shoppingList", "list123");
 
@@ -48,25 +47,6 @@ function App() {
 
     // Save to Firebase in BACKGROUND (no await)
     saveToFirebase(newList);
-  }
-
-  // to move Items up or down in the List
-  async function handleMove(index, direction) {
-    setShoppingList(prevList => {
-      const newList = [...prevList];
-      const targetIndex = direction === 'up' ? index - 1 : index + 1;
-
-      // Check List boundaries before moving
-      if (targetIndex <0 || targetIndex >= newList.length) return prevList;
-
-      // swap the two items
-      [newList[index], newList[targetIndex]] = [newList[targetIndex], newList[index]];
-
-      // Save to Firebase in BACKGROUND
-      saveToFirebase(newList);
-
-      return newList;
-    });
   }
 
   async function handleToggle(ind) {
@@ -166,7 +146,6 @@ function App() {
           >
             Purchased
           </button>
-
         </div>
 
         <div className="flex gap-2">
@@ -192,7 +171,6 @@ function App() {
                     object={object} 
                     handleToggle={handleToggle} 
                     handleDeleteItem={handleDeleteItem} 
-                    handleMove={handleMove}
                     index={index} 
                     key={index} 
                     active={active}

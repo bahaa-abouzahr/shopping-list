@@ -1,0 +1,28 @@
+function List({object, index, handleDeleteItem, handleToggle, handleMove, active}) {
+  const {item, bought} = object;
+
+  if(active === 2 && bought === true ) return;
+  if(active === 3 && bought === false) return;
+
+  return (
+    <div className={`grid grid-cols-3 items-center w-[80%] border-b border-gray-300 my-1 px-1 text-sm`}>
+      <span 
+        onClick={() => handleToggle(index)}
+        className={`${bought ? "text-green-300 line-through" : "text-red-500"} cursor-pointer`}
+      >
+        {item}
+      </span>
+
+      <div className="flex gap-6 justify-center h-full items-center">
+        <button onClick={() => handleMove(index, 'up')} className="text-xs">↑</button>
+        <button onClick={() => handleMove(index, 'down')} className="text-xs">↓</button>
+      </div>
+
+      <button onClick={() => handleDeleteItem(index)} className="flex justify-end items-center text-xs text-red-500h-full ">❌</button>
+
+
+    </div>
+  )
+}
+
+export default List
