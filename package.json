@@ -2,7 +2,7 @@
   "name": "01-shopping-list",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://bahaa-abouzahr.github.io/shopping-list-v1/",
+  "homepage": "https://bahaa-abouzahr.github.io/shopping-list",
   "type": "module",
   "scripts": {
     "dev": "vite",

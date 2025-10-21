@@ -5,7 +5,7 @@ function List({object, index, handleDeleteItem, handleToggle, handleMove, active
   if(active === 3 && bought === false) return;
 
   return (
-    <div className={`grid grid-cols-3 items-center w-[80%] border-b border-gray-300 my-1 px-1 text-sm`}>
+    <div className={`grid grid-cols-3 items-center w-[100%] border-b border-gray-300 my-1 px-1 text-sm`}>
       <span 
         onClick={() => handleToggle(index)}
         className={`${bought ? "text-green-300 line-through" : "text-red-500"} cursor-pointer`}
