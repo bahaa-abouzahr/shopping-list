@@ -186,7 +186,7 @@ function App() {
 
         { !loaded ? <Spinner /> : 
           shoppingList.length > 0 ? 
-            <div className="flex flex-col items-center w-full">
+            <div className="flex flex-col items-center w-full gap-2">
               {shoppingList.map((object,index) => (
                   <List 
                     object={object} 

@@ -1,3 +1,5 @@
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+
 function List({object, index, handleDeleteItem, handleToggle, handleMove, active}) {
   const {item, bought} = object;
 
@@ -14,8 +16,8 @@ function List({object, index, handleDeleteItem, handleToggle, handleMove, active
       </span>
 
       <div className="flex gap-8 justify-center items-center">
-        <button onClick={() => handleMove(index, 'up')} className="text-lg">↑</button>
-        <button onClick={() => handleMove(index, 'down')} className="text-lg">↓</button>
+        <button onClick={() => handleMove(index, 'up')}><FaArrowUp /></button>
+        <button onClick={() => handleMove(index, 'down')}><FaArrowDown /></button>
       </div>
 
       <button onClick={() => handleDeleteItem(index)} className="flex justify-end items-center text-xs text-red-500 ">❌</button>
